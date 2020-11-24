@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StudyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="AccountId" />
+    </Key>
+    <Property Name="AccountId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountCode" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="BankId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="CustomerId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="Balance" Type="money" />
+  </EntityType>
+  <EntityType Name="Bank">
+    <Key>
+      <PropertyRef Name="BankId" />
+    </Key>
+    <Property Name="BankId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BankName" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdentificationTypeId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="IdentificationNumber" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="CustomerFirtsName" Type="varchar" MaxLength="20" />
+    <Property Name="CustomerLastName" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="IdentificationType">
+    <Key>
+      <PropertyRef Name="IdentificationTypeId" />
+    </Key>
+    <Property Name="IdentificationTypeId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdentificationTypeName" Type="varchar" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Movement">
+    <Key>
+      <PropertyRef Name="MovementId" />
+    </Key>
+    <Property Name="MovementId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MovementTypeId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="SourceAccountId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="TargetAccountId" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="Amount" Type="money" Nullable="false" />
+    <Property Name="GMF" Type="money" Nullable="false" />
+    <Property Name="MovementDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MovementType">
+    <Key>
+      <PropertyRef Name="MovementTypeId" />
+    </Key>
+    <Property Name="MovementTypeId" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MovementName" Type="varchar" MaxLength="25" />
+  </EntityType>
+  <Association Name="FK_Account_Bank">
+    <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
+    <End Role="Account" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bank">
+        <PropertyRef Name="BankId" />
+      </Principal>
+      <Dependent Role="Account">
+        <PropertyRef Name="BankId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Account_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+    <End Role="Account" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="Account">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Customer_IdentificationType">
+    <End Role="IdentificationType" Type="Self.IdentificationType" Multiplicity="1" />
+    <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IdentificationType">
+        <PropertyRef Name="IdentificationTypeId" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="IdentificationTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Movement_MovementType">
+    <End Role="MovementType" Type="Self.MovementType" Multiplicity="1" />
+    <End Role="Movement" Type="Self.Movement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MovementType">
+        <PropertyRef Name="MovementTypeId" />
+      </Principal>
+      <Dependent Role="Movement">
+        <PropertyRef Name="MovementTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Movement_SourceAccount">
+    <End Role="Account" Type="Self.Account" Multiplicity="1" />
+    <End Role="Movement" Type="Self.Movement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="AccountId" />
+      </Principal>
+      <Dependent Role="Movement">
+        <PropertyRef Name="SourceAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Movement_TargetAccount">
+    <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+    <End Role="Movement" Type="Self.Movement" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="AccountId" />
+      </Principal>
+      <Dependent Role="Movement">
+        <PropertyRef Name="TargetAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="StudyModelStoreContainer">
+    <EntitySet Name="Account" EntityType="Self.Account" Schema="Banking" store:Type="Tables" />
+    <EntitySet Name="Bank" EntityType="Self.Bank" Schema="Banking" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="Banking" store:Type="Tables" />
+    <EntitySet Name="IdentificationType" EntityType="Self.IdentificationType" Schema="Banking" store:Type="Tables" />
+    <EntitySet Name="Movement" EntityType="Self.Movement" Schema="Banking" store:Type="Tables" />
+    <EntitySet Name="MovementType" EntityType="Self.MovementType" Schema="Banking" store:Type="Tables" />
+    <AssociationSet Name="FK_Account_Bank" Association="Self.FK_Account_Bank">
+      <End Role="Bank" EntitySet="Bank" />
+      <End Role="Account" EntitySet="Account" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Account_Customer" Association="Self.FK_Account_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Account" EntitySet="Account" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Customer_IdentificationType" Association="Self.FK_Customer_IdentificationType">
+      <End Role="IdentificationType" EntitySet="IdentificationType" />
+      <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Movement_MovementType" Association="Self.FK_Movement_MovementType">
+      <End Role="MovementType" EntitySet="MovementType" />
+      <End Role="Movement" EntitySet="Movement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Movement_SourceAccount" Association="Self.FK_Movement_SourceAccount">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Movement" EntitySet="Movement" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Movement_TargetAccount" Association="Self.FK_Movement_TargetAccount">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="Movement" EntitySet="Movement" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

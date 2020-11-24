@@ -1,0 +1,1 @@
+C:\Users\Alex Molina\Desktop\Banking\BankingApiREST.Tests\obj\Debug\BankingApiREST.Tests.csprojResolveAssemblyReference.cache

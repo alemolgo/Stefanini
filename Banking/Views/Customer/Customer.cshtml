@@ -1,0 +1,67 @@
+﻿@model Banking.Models.Entities.Customer
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Customer</title>
+</head>
+<body>
+    <div>
+        <label>Id Cliente: @Model.customerId</label><br />
+        <label>Numero de identificación: @Model.identificationNumber</label><br />
+        <label>Nombre: @Model.firstName</label><br />
+        <label>Apellido: @Model.lastName</label><br />
+        <br />
+    </div>
+    <div>
+        <strong>Tipo de transacciones disponibles</strong>
+    </div>
+    <div>
+        <ul>
+            <li>
+                <h3>Cuenta A</h3>
+                <label>Banco: @Model.bankAName</label><br />
+                <label>Saldo: @Model.bankABalance</label><br />
+            </li>
+            <li>
+                <h3>Cuenta B</h3>
+                <label>Banco: @Model.bankBName</label><br />
+                <label>Saldo: @Model.bankBBalance</label><br />
+            </li>
+            <li>
+                <h3>Cuenta C</h3>
+                <label>Banco: @Model.bankCName</label><br />
+                <label>Saldo: @Model.bankCBalance</label><br />
+            </li>
+        </ul>
+    </div>
+    <div>
+        <form action="/Transaction/Withdrawal" method="post">
+            <label>Valor:    <input type="text" name="transactionValue" value="" /></label>
+            <label>   Tipo de transaccion: </label>
+            <select name="select" id="select">
+                <option value="item 0">Seleccione Trans.</option>
+                <option value="item 1">Retiro de Cta. A</option>
+                <option value="item 2">Retiro de Cta. B</option>
+                <option value="item 3">Retiro de Cta. C</option>
+                <option value="item 4">Transferencia A--> B</option>
+                <option value="item 5">Transferencia A--> C</option>
+                <option value="item 6">Transferencia B--> C</option>
+                <option value="item 7">Transferencia B--> A</option>
+                <option value="item 8">Transferencia C--> A</option>
+                <option value="item 9">Transferencia C--> B</option>
+            </select>
+            <input type="submit" name="ExecutionA" value="Ejecutar" id="TransactionA" />
+        </form>
+    </div>
+    <footer>
+        <p>&copy;AMG</p>
+    </footer>
+
+</body>
+</html>

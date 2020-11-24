@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="IdentificatiponTypes" EntityType="Model1.IdentificatiponType" />
+    <EntitySet Name="Customers" EntityType="Model1.Customer" />
+    <AssociationSet Name="IdentificatiponTypeCustomer" Association="Model1.IdentificatiponTypeCustomer">
+      <End Role="IdentificatiponType" EntitySet="IdentificatiponTypes" />
+      <End Role="Customer" EntitySet="Customers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="IdentificatiponType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdentificationName" Type="String" Nullable="false" />
+    <NavigationProperty Name="Customers" Relationship="Model1.IdentificatiponTypeCustomer" FromRole="IdentificatiponType" ToRole="Customer" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdentifactionTypeId" Type="String" Nullable="false" />
+    <NavigationProperty Name="IdentificatiponType" Relationship="Model1.IdentificatiponTypeCustomer" FromRole="Customer" ToRole="IdentificatiponType" />
+  </EntityType>
+  <Association Name="IdentificatiponTypeCustomer">
+    <End Type="Model1.IdentificatiponType" Role="IdentificatiponType" Multiplicity="1" />
+    <End Type="Model1.Customer" Role="Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IdentificatiponType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="IdentifactionTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
